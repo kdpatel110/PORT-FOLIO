@@ -1,7 +1,7 @@
 // Contact section: a simple message form + contact details.
 "use client"
 
-import type React from "react"
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -9,9 +9,53 @@ import { Label } from "@/components/ui/label"
 import { MapPin, Mail, Phone } from "lucide-react"
 
 export function Contact() {
-  // The form does not send anywhere yet — just prevent a page reload on submit.
-  function handleSubmit(e: React.FormEvent) {
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
+  const [message, setMessage] = useState<string>("")
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
+
+    const form = e.currentTarget
+    const formData = new FormData(form)
+    const payload = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      subject: formData.get("subject"),
+      comment: formData.get("comment"),
+    }
+
+    if (!payload.name || !payload.email || !payload.subject || !payload.comment) {
+      setStatus("error")
+      setMessage("Please fill out every field before sending.")
+      return
+    }
+
+    setStatus("sending")
+    setMessage("")
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data?.error || "Failed to send message")
+      }
+
+      setStatus("success")
+      setMessage("Message sent! I will respond soon.")
+      form.reset()
+    } catch (error) {
+      console.error(error)
+      setStatus("error")
+      setMessage("Sorry, something went wrong. Please try again later.")
+    }
   }
 
   return (
@@ -28,55 +72,61 @@ export function Contact() {
       <div className="mt-12 grid gap-10 md:grid-cols-3">
         {/* Left (wider): the message form */}
         <form onSubmit={handleSubmit} className="space-y-4 md:col-span-2">
-          <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-1.5">
               <Label htmlFor="name">Name (required)</Label>
-              <Input id="name" placeholder="Full name" required />
+                <Input id="name" name="name" placeholder="Full name" required />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="email">Email (required)</Label>
+                <Input id="email" name="email" type="email" placeholder="Email address" required />
+              </div>
             </div>
+
             <div className="space-y-1.5">
-              <Label htmlFor="email">Email (required)</Label>
-              <Input id="email" type="email" placeholder="Email address" required />
+              <Label htmlFor="subject">Subject (required)</Label>
+              <Input id="subject" name="subject" placeholder="Subject" required />
             </div>
-          </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="subject">Subject (required)</Label>
-            <Input id="subject" placeholder="Subject" required />
-          </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="comment">Comment (required)</Label>
+              <Textarea id="comment" name="comment" placeholder="Type comment" rows={5} required />
+            </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="comment">Comment (required)</Label>
-            <Textarea id="comment" placeholder="Type comment" rows={5} required />
-          </div>
+            <Button type="submit" className="w-full rounded-full" size="lg" disabled={status === "sending"}>
+              {status === "sending" ? "Sending..." : "Contact Me"}
+            </Button>
 
-          <Button type="submit" className="w-full rounded-full" size="lg">
-            Contact Me
-          </Button>
+            {message ? (
+              <p className={`mt-3 text-sm ${status === "success" ? "text-emerald-500" : "text-destructive"}`}>
+                {message}
+              </p>
+            ) : null}
         </form>
 
-        {/* Right: contact details */}
         <div>
-          <h3 className="text-xl font-bold">Get in Touch</h3>
-          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            If you&apos;ve got an idea, a question, or just want to say hi, I&apos;d love to hear from you.
-          </p>
-
-          <ul className="mt-6 space-y-4 text-sm">
-            <li className="flex items-center gap-3">
-              <MapPin className="h-5 w-5 text-primary" />
-              Dhruvi Kalariya
-            </li>
-            <li className="flex items-center gap-3">
-              <Mail className="h-5 w-5 text-primary" />
-              dhruvikalariya011@gmail.com
-            </li>
-            <li className="flex items-center gap-3">
-              <Phone className="h-5 w-5 text-primary" />
-              +91 8799660116
-            </li>
-          </ul>
+            <h3 className="text-xl font-bold">Get in Touch</h3>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+              If you&apos;ve got an idea, a question, or just want to say hi, I&apos;d love to hear from you.
+            </p>
+            <ul className="mt-6 space-y-4 text-sm">
+              <li className="flex items-center gap-3">
+                <MapPin className="h-5 w-5 text-primary" />
+                Dhruvi Kalariya
+              </li>
+              <li className="flex items-center gap-3">
+                <Mail className="h-5 w-5 text-primary" />
+                  dhruvikalariya011@gmail.com
+              </li>
+              <li className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-primary" />
+                  +91 8799660116
+              </li>
+            </ul>
         </div>
-      </div>
+        
+        </div>
+      
     </section>
   )
 }

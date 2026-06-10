@@ -10,25 +10,12 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Reza Ghasemzadeh - Full-Stack Developer & Programming Instructor",
+  title: "Dhruvi Kalariya ",
   description:
-    "Personal portfolio of Reza Ghasemzadeh, a full-stack developer building scalable applications since 2015.",
+    "portfolio",
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
+    icon: '/icon.svg',
     apple: '/apple-icon.png',
   },
 }
