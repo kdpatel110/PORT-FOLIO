@@ -25,19 +25,13 @@ This repository contains a developer portfolio site showcasing projects, skills,
 1. Install dependencies:
 
 ```bash
-pnpm install
+npm install
 ```
 
 2. Run development server:
 
 ```bash
-pnpm dev
-```
-
-3. Build for production:
-
-```bash
-pnpm build && pnpm start
+npm dev
 ```
 
 ## Contributing
