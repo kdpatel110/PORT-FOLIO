@@ -23,7 +23,8 @@ export function Hero() {
         <div className="text-center md:text-left">
           <p className="text-sm font-medium text-primary">Hi There, I&apos;m</p>
           <h1 className="mt-1 text-4xl font-extrabold tracking-tight md:text-5xl">Dhruvi Kalariya</h1>
-          <h2 className="mt-2 text-lg font-semibold text-muted-foreground">Problem Solver</h2>
+          <h2 className="mt-2 text-lg font-semibold text-muted-foreground">Hii</h2>
+          <h2 className="mt-2 text-lg font-semibold text-muted-foreground">I'am Dhruvi currently in third year of college.i am compurt engineering student and working as a frontend devloper in our college website in admin side.</h2>
 
           {/* Social icon buttons */}
           <div className="mt-5 flex flex-wrap justify-center gap-4 md:justify-start">

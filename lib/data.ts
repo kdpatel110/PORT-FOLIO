@@ -46,6 +46,7 @@ export const experiences = [
 export const projects = [
   {
     name: "Perplexity clone",
+    address: `https://github.com/kdpatel110/Perplexity`,
     description:
       "Perplexity is a public full-stack AI-powered search platform built using TypeScript, React 19, and Express 5.It leverages Bun as its runtime, Prisma/PostgreSQL for database management, and Supabase for user authentication. The application integrates OpenAI, OpenRouter, and Tavily Search APIs to deliver real-time, intelligent query results.",
   },

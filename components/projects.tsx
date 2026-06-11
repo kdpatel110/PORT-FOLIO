@@ -1,6 +1,7 @@
 // "What have I created?" — personal projects shown as cards.
 import { Button } from "@/components/ui/button"
 import { projects } from "@/lib/data"
+import { Link } from "lucide-react"
 
 export function Projects() {
   return (
@@ -18,14 +19,17 @@ export function Projects() {
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {projects.map((project) => (
           <article key={project.name} className="rounded-xl border border-border bg-card p-6">
-            
-
-            <h3 className="text-lg font-bold text-primary">{project.name}</h3>
+            <div className="flex justify-between">
+              <h3 className="text-lg font-bold text-primary">{project.name}</h3>
+              <a href={project.address}> <Link/> </a>
+            </div>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
 
-            <Button className="mt-4 rounded-full" size="sm">
+            <Button  className="mt-4 rounded-full" size="sm">
               Read More
             </Button>
+            
+
           </article>
         ))}
       </div>
